@@ -14,13 +14,17 @@ export function Board({ xIsNext, squares, onPlay }) {
         }
         onPlay(nextSquares);
     }
-
-    const winner = calculateWinner(squares);
+    const winSquares = calculateWinner(squares);
+    const winner = winSquares && squares[winSquares[0]];
     let status;
     if (winner) {
         status = 'Winner: ' + winner;
     } else {
         status = 'Next player: ' + (xIsNext ? 'X' : 'O');
+    }
+
+    if (squares.findIndex((square) => square === null) < 0 && !winner) {
+        status = 'Draw';
     }
 
     const boardRows = [];
@@ -30,10 +34,11 @@ export function Board({ xIsNext, squares, onPlay }) {
         const boardCols = [];
         for (let j = 0; j < cols; j++) {
             const index = 3 * i + j;
+            const className = `${winSquares && winSquares.includes(index) ? 'win-square' : ''}`;
             boardCols.push(
                 <Square
                     key={index}
-                    className="square"
+                    className={className}
                     value={squares[index]}
                     onSquareClick={() => handleClick(index)}
                 />

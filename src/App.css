@@ -65,6 +65,15 @@
     gap: 96px;
 }
 
+.game-board {
+    flex-shrink: 0;
+}
+
+.game-info {
+    min-width: 300px;
+    font-size: 2rem;
+}
+
 @media screen and (max-width: 1024px) {
     .wrapper {
         align-items: flex-start;
@@ -78,15 +87,17 @@
     .game-board {
         position: sticky;
         top: 0;
+        background: #fff;
     }
     .jump-btn-list {
         display: grid;
         gap: 12px;
     }
-}
 
-.game-info {
-    font-size: 2rem;
+    .game-info {
+        min-width: 100%;
+        font-size: 2rem;
+    }
 }
 
 .jump-btn {

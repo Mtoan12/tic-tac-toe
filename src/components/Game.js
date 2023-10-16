@@ -1,16 +1,20 @@
 import { useState } from 'react';
 import { Board } from './Board';
+import calculateLocation from '../utils/calculateLocation';
 
 export default function Game() {
     const [history, setHistory] = useState([Array(9).fill(null)]);
     const [currentMove, setCurrentMove] = useState(0);
     const [decreasing, setDecreasing] = useState(false);
+    const [coordinates, setCoordinates] = useState([]);
     const xIsNext = currentMove % 2 === 0;
     const currentSquares = history[currentMove];
 
     function handlePlay(nextSquares) {
         const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+        const location = calculateLocation(currentSquares, nextSquares);
         setHistory(nextHistory);
+        setCoordinates([...coordinates, location]);
         setCurrentMove(nextHistory.length - 1);
     }
 
@@ -23,8 +27,10 @@ export default function Game() {
             move = history.length - move;
         }
         let description;
+        let location =
+            coordinates.length > 0 && move > 0 ? `(${coordinates[move - 1].join(',')})` : '';
         if (move > 0) {
-            description = 'Go to move #' + move;
+            description = `Go to move #${move} ${location}`;
         } else {
             description = 'Go to game start';
         }
@@ -32,7 +38,7 @@ export default function Game() {
         return (
             <li key={move}>
                 {move === currentMove ? (
-                    <span className="current-move"> {`You are at move #${move}`}</span>
+                    <span className="current-move">{`You are at move #${move} ${location}`}</span>
                 ) : (
                     <button className="jump-btn" onClick={() => jumpTo(move)}>
                         {description}

@@ -12,9 +12,9 @@ export default function Game() {
 
     function handlePlay(nextSquares) {
         const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
-        const location = calculateLocation(currentSquares, nextSquares);
+        const nextLocation = calculateLocation(currentSquares, nextSquares);
         setHistory(nextHistory);
-        setCoordinates([...coordinates, location]);
+        setCoordinates([...coordinates.slice(0, currentMove), nextLocation]);
         setCurrentMove(nextHistory.length - 1);
     }
 
@@ -28,7 +28,7 @@ export default function Game() {
         }
         let description;
         let location =
-            coordinates.length > 0 && move > 0 ? `(${coordinates[move - 1].join(',')})` : '';
+            coordinates.length > 0 && move > 0 ? `(${coordinates[move - 1].join(', ')})` : '';
         if (move > 0) {
             description = `Go to move #${move} ${location}`;
         } else {
